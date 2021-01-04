@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option csharp_namespace = "PrateleiraLivros.gRPCService.Protos";
+
+package v1;
+
+service Editora {
+	rpc ListAll (EditoraSearch) returns (stream EditorasResponse);
+	rpc GetById (EditoraFilter) returns (EditoraResponse);
+	rpc Create (EditoraCreateRequest) returns (EditoraResponse);
+	rpc Update (EditoraUpdateRequest) returns (EditoraResponse);
+	rpc Delete (EditoraFilter) returns (EditoraResponse);
+	rpc GetLivros (EditoraFilter) returns (stream EditoraLivrosResponse);
+}
+
+// Filtros
+
+message EditoraFilter {
+	string editoraId = 1;
+}
+
+message EditoraSearch {
+	string nome = 1;
+}
+
+// Modelos
+
+message EditoraModel {
+	string id = 1;
+	string nome = 2;
+	string siteURL = 3; 
+	string endereco = 4;
+}
+
+message EditoraLivroModel {
+	string id = 1;
+	string titulo = 2;
+	string descricao = 3;
+	double valor = 4;
+	int64 isbn10 = 5;
+	int32 edicao = 6;
+	string dataPublicacao = 7;
+	string idioma = 8;
+	int32 numeroPaginas = 9;
+	string editoraId = 10;
+	string autorId = 11;
+}
+
+message EditoraValidationErrorsModel {
+	string error = 1;
+	string property = 2;
+	string nivel = 3;
+}
+
+// Requisições
+
+message EditoraCreateRequest {
+	string nome = 1;
+	string siteURL = 2; 
+	string endereco = 3;
+}
+
+message EditoraUpdateRequest {
+	string editoraId = 1;
+	string nome = 2;
+	string siteURL = 3; 
+	string endereco = 4;
+}
+
+// Respostas
+
+message EditorasResponse {
+	int32 code = 1;
+	string message = 2;
+	repeated EditoraModel data = 3;
+	repeated string errors = 4;
+	repeated EditoraValidationErrorsModel validations = 5;
+}
+
+message EditoraResponse {
+	int32 code = 1;
+	string message = 2;
+	EditoraModel data = 3;
+	repeated string errors = 4;
+	repeated EditoraValidationErrorsModel validations = 5;
+}
+
+message EditoraLivrosResponse {
+	int32 code = 1;
+	string message = 2;
+	repeated EditoraLivroModel data = 3;
+	repeated string errors = 4;
+}

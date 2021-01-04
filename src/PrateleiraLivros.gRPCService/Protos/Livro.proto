@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option csharp_namespace = "PrateleiraLivros.gRPCService.Protos";
+
+package v1;
+
+service Livro {
+	rpc ListAll (LivroSearch) returns (stream LivrosResponse);
+	rpc GetById (LivroFilter) returns (LivroResponse);
+	rpc Create (LivroCreateRequest) returns (LivroResponse);
+	rpc Update (LivroUpdateRequest) returns (LivroResponse);
+	rpc Delete (LivroFilter) returns (LivroResponse);
+}
+
+// Filtros
+
+message LivroFilter {
+	string livroId = 1;
+}
+
+message LivroSearch {
+	string titulo = 1;
+	string idioma = 2;
+	string editoraId = 3;
+	string autorId = 4;
+}
+
+// Modelos
+
+message LivroModel {
+	string id = 1;
+	string titulo = 2;
+	string descricao = 3;
+	double valor = 4;
+	int64 isbn10 = 5;
+	int32 edicao = 6;
+	string dataPublicacao = 7;
+	string idioma = 8;
+	int32 numeroPaginas = 9;
+	string editoraId = 10;
+	string autorId = 11;
+}
+
+message LivroValidationErrorsModel {
+	string error = 1;
+	string property = 2;
+	string nivel = 3;
+}
+
+// Requisições
+
+message LivroCreateRequest {
+	string titulo = 1;
+	string descricao = 2;
+	double valor = 3;
+	int64 isbn10 = 4;
+	int32 edicao = 5;
+	string dataPublicacao = 6;
+	string idioma = 7;
+	int32 numeroPaginas = 8;
+	string editoraId = 9;
+	string autorId = 10;
+}
+
+message LivroUpdateRequest {
+	string livroId = 1;
+	string titulo = 2;
+	string descricao = 3;
+	double valor = 4;
+	int64 isbn10 = 5;
+	int32 edicao = 6;
+	string dataPublicacao = 7;
+	string idioma = 8;
+	int32 numeroPaginas = 9;
+}
+
+// Respostas
+
+message LivrosResponse {
+	int32 code = 1;
+	string message = 2;
+	repeated LivroModel data = 3;
+	repeated string errors = 4;
+	repeated LivroValidationErrorsModel validations = 5;
+}
+
+message LivroResponse {
+	int32 code = 1;
+	string message = 2;
+	LivroModel data = 3;
+	repeated string errors = 4;
+	repeated LivroValidationErrorsModel validations = 5;
+}

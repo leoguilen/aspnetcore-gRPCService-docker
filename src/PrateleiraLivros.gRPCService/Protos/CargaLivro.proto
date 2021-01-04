@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "PrateleiraLivros.gRPCService.Protos";
+
+package v1;
+
+service CargaLivro {
+	rpc UploadFile (stream FileUploadRequest) returns (FileUploadResponse);
+}
+
+message FileUploadRequest {
+  bytes content = 1;
+}
+
+message FileUploadResponse {
+	string message = 1;
+	int32 countUploaded = 2;
+	string status = 3;
+}
